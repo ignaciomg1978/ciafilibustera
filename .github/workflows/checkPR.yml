@@ -1,0 +1,22 @@
+name: Check Prettier
+
+on: [pull_request]
+
+jobs:
+  chequear:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar Archivos
+        uses: actions/checkout@v4
+
+      - name: Actualizar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalamos dependencias
+        run: npm i
+
+      #Prettier es un validador de código. Se podría pasar también sonarLint, test unitarios etc
+      - name: Correr Prettier Check
+        run: npx prettier . --check

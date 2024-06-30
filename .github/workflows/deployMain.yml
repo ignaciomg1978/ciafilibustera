@@ -1,0 +1,33 @@
+name: Deploy to Vercel
+#Varialbes de entorno locales
+env:
+  VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
+  VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar Archivos
+        uses: actions/checkout@v4
+
+      - name: Actualizar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalación Vercel
+        run: npm install --global vercel
+
+      - name: Pull a Vercel
+        run: vercel pull --yes --environment=production --token=${{secrets.VERCEL_TOKEN}}
+
+      - name: Build en Vercel
+        run: vercel build --prod --token=${{secrets.VERCEL_TOKEN}}
+
+      - name: Deploy Project
+        run: vercel deploy --prebuilt --prod --token=${{secrets.VERCEL_TOKEN}}
